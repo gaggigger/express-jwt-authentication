@@ -7,7 +7,7 @@ const express = require('express'),
       mongoose = require('mongoose');
 
 //DB Setup
-mongoose.connect('mongodb://localhost:auth/users');
+mongoose.connect('mongodb://localhost:local/auth');
 
 // App Setup - Middleware
 app.use(morgan('combined'));
