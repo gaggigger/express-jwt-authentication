@@ -1,14 +1,31 @@
-const mongoose = require('mongoose'),
-        Schema = mongoose.Schema;
+const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
+const bcrypt = require('bcrypt-nodejs');
 
-// Define Model
+// Define our model
 const userSchema = new Schema({
-  'email': { type: String, unique: true, lowercase: true },
-  'password': String
+  email: { type: String, unique: true, lowercase: true },
+  password: String
 });
 
-// Create Model Class
-const Model = mongoose.model('user', userSchema);
+// On Save Hook, encrypt password
+userSchema.pre('save', (next) => {
+  const user = this;
 
-//Export Model
-module.exports = Model;
+  bcrypt.genSalt(10, (err, salt) => {
+    if (err) { return next(err); }
+
+    bcrypt.hash(user.password, salt, null, (err, hash) => {
+      if (err) { return next(err); }
+
+      user.password = hash;
+      next();
+    });
+  });
+});
+
+// Create the model class
+const ModelClass = mongoose.model('user', userSchema);
+
+// Export the model
+module.exports = ModelClass;
