@@ -1,11 +1,14 @@
 const express = require('express'),
       http = require('http'),
-      bodyParser = require('body-parser'),
-      morgan = require('morgan'),
+      bodyParser = require('body-parser'), //parsing json
+      morgan = require('morgan'), //Logging
+      router = require('./router'),
       app = express();
 
-// App Setup
-
+// App Setup - Middleware
+app.use(morgan('combined'));
+app.use(bodyParser.json({type: '*/*'}));
+router(app);
 
 //Server Setup
 const port = process.env.PORT || 3090,
