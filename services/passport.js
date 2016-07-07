@@ -6,7 +6,7 @@ const passport = require('passport'),
 
 // Set up JWT Strategy
 const JwtOptions = {
-  JwtFromRequest: ExtractJwt.fromHeader('authorization'),
+  jwtFromRequest: ExtractJwt.fromHeader('authorization'),
   secretOrKey: config.secret
 };
 
@@ -28,4 +28,4 @@ const JwtLogin = new JwtStrategy(JwtOptions, (payload, done) => {
 });
 
 // Tell pass port to use this strategy
-passport.use(JwtLogin);
+module.exports = passport.use(JwtLogin);
