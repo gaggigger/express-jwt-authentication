@@ -1,4 +1,13 @@
-const User = require('../models/user');
+const jwt = require('jwt-simple'),
+      config = require('../config'),
+      User = require('../models/user');
+
+function tokenForUser(user) {
+
+  const timestamp = new Date().getTime();
+
+  return jwt.encode({ sub: user.id, iat: timestamp }, config.secret);
+}
 
 const checkIfEmailExists = (res, email, password) => (err, existingUser) => {
   if(err) return next(err);
@@ -18,7 +27,7 @@ const checkIfEmailExists = (res, email, password) => (err, existingUser) => {
     if(err) return next(err);
 
     //Response indicting that the user was saved
-    res.json({success: true});
+    res.json({token: tokenForUser(user)});
   });
 
 };
