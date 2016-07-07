@@ -11,6 +11,14 @@ const userSchema = new Schema({
 // On Save Hook, encrypt password
 userSchema.pre('save', encryptPassword);
 
+userSchema.methods.comparePassword = function(candidatePassword, callback) {
+  bcrypt.compare(candidatePassword, this.password, function(err, isMatch) {
+    if(err) return callback(err);
+
+    callback(null, isMatch);
+  });
+};
+
 function encryptPassword(next) {
   const user = this;
 
