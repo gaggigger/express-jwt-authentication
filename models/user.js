@@ -14,16 +14,24 @@ userSchema.pre('save', encryptPassword);
 function encryptPassword(next) {
   const user = this;
 
-  bcrypt.genSalt(10, function(err, salt) {
+  bcrypt.genSalt(10, saltCallback(user, next));
+}
+
+function saltCallback(user, next) {
+  return function(err, salt) {
     if (err) { return next(err); }
 
-    bcrypt.hash(user.password, salt, null, function(err, hash) {
-      if (err) { return next(err); }
+    bcrypt.hash(user.password, salt, null, hashCallback(user, next));
+  }
+}
 
-      user.password = hash;
-      next();
-    });
-  });
+function hashCallback(user, next) {
+  return function(err, hash) {
+    if (err) { return next(err); }
+
+    user.password = hash;
+    next();
+  }
 }
 
 
