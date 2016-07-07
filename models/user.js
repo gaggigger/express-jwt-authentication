@@ -19,7 +19,7 @@ function encryptPassword(next) {
 
 function saltCallback(user, next) {
   return function(err, salt) {
-    if (err) { return next(err); }
+    if (err) return next(err);
 
     bcrypt.hash(user.password, salt, null, hashCallback(user, next));
   }
@@ -27,7 +27,7 @@ function saltCallback(user, next) {
 
 function hashCallback(user, next) {
   return function(err, hash) {
-    if (err) { return next(err); }
+    if (err) return next(err);
 
     user.password = hash;
     next();
