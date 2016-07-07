@@ -9,7 +9,9 @@ const userSchema = new Schema({
 });
 
 // On Save Hook, encrypt password
-userSchema.pre('save', function(next) {
+userSchema.pre('save', encryptPassword);
+
+function encryptPassword(next) {
   const user = this;
 
   bcrypt.genSalt(10, function(err, salt) {
@@ -22,7 +24,8 @@ userSchema.pre('save', function(next) {
       next();
     });
   });
-});
+}
+
 
 // Create the model class
 const ModelClass = mongoose.model('user', userSchema);
