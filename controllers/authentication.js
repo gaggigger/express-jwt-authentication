@@ -1,29 +1,27 @@
 const User = require('../models/user');
 
-function checkIfEmailExists(res, email, password) {
-  return function(err, existingUser) {
+const checkIfEmailExists = (res, email, password) => (err, existingUser) => {
+  if(err) return next(err);
+
+  // if user email exists, return error
+  if(existingUser) {
+    return res.status(422).send({error: "email is in use"});
+  }
+
+  // if user doesn't exist,
+  const user = new User({
+    email: email,
+    password: password
+  });
+
+  user.save(err => {
     if(err) return next(err);
 
-    // if user email exists, return error
-    if(existingUser) {
-      return res.status(422).send({error: "email is in use"});
-    }
+    //Response indicting that the user was saved
+    res.json({success: true});
+  });
 
-    // if user doesn't exist,
-    const user = new User({
-      email: email,
-      password: password
-    });
-
-    user.save(err => {
-      if(err) return next(err);
-
-      //Response indicting that the user was saved
-      res.json({success: true});
-    });
-
-  }
-}
+};
 
 exports.signup = (req, res, next) => {
 
