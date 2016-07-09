@@ -1,22 +1,33 @@
-var chakram = require('chakram'),
-    expect = chakram.expect;
+const chakram = require('chakram'),
+    expect = chakram.expect,
+    User = require('../models/user'),
+    tokenForUser = require('../helpers/token_for_user');
 
-describe("Index Route", function() {
-
+describe("Index Route", () => {
 
     it("should deny access to unauthenticated users", () => {
-        var response = chakram.get("http://localhost:3090/");
+        const response = chakram.get("http://localhost:3090/");
         return expect(response).to.have.status(401);
     });
 
     it("should allow access to authenticated users", () => {
-        var accessToken = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI1NzdlZTc2ZGFkOTU3ZGJjMDNjYzNjZGEiLCJpYXQiOjE0NjgwOTcyMzMxMjd9.C3eEpZ2WID3Y_nZqfNRIo6cinIYtMS2b0EYzk0KOEPk";
-        var response = chakram.get("http://localhost:3090/",{
-          headers:{
-            'content-type': 'application/json',
-            'authorization': accessToken
-          }
+        const user = new User({
+          email: "jameswest@example.com",
+          password: "password"
         });
-        return expect(response).to.have.status(200);
+
+        user.save(err => {
+          if(err) console.log(err);
+
+          const response = chakram.get("http://localhost:3090/",{
+            'headers':{
+              'content-type': 'application/json',
+              'authorization': tokenForUser(user)
+            }
+          });
+
+          return expect(response).to.have.status(200);
+        });
+
     });
 });
