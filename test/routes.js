@@ -4,6 +4,14 @@ const chakram = require('chakram'),
     tokenForUser = require('../helpers/token_for_user');
 
 describe("Index Route", () => {
+    var user;
+
+    beforeEach(() => {
+      user = new User({
+        email: "jameswest@example.com",
+        password: "password"
+      });
+    });
 
     it("should deny access to unauthenticated users", () => {
         const response = chakram.get("http://localhost:3090/");
@@ -11,10 +19,6 @@ describe("Index Route", () => {
     });
 
     it("should allow access to authenticated users", () => {
-        const user = new User({
-          email: "jameswest@example.com",
-          password: "password"
-        });
 
         user.save(err => {
           if(err) console.log(err);
