@@ -22,7 +22,7 @@ describe("Index Route", () => {
           const response = chakram.get("http://localhost:3090/",{
             'headers':{
               'content-type': 'application/json',
-              'authorization': tokenForUser(user)
+              'authorization': tokenForUser(this)
             }
           });
 
