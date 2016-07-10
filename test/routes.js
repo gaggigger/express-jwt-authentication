@@ -44,7 +44,7 @@ describe("Routes", () => {
     });
   });
 
-  describe("/signup",() => {
+  describe("/signup", () => {
     it("should require email", () => {
       user.email = "";
 
