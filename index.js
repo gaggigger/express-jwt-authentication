@@ -4,6 +4,7 @@ const express = require('express'),
       morgan = require('morgan'), //Logging
       router = require('./router'),
       app = express(),
+      cors = require('cors'),
       mongoose = require('mongoose');
 
 //DB Setup
@@ -11,6 +12,7 @@ mongoose.connect('mongodb://localhost:local/auth');
 
 // App Setup - Middleware
 app.use(morgan('combined'));
+app.use(cors())
 app.use(bodyParser.json({type: '*/*'}));
 
 // Set up Router
