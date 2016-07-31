@@ -5,7 +5,7 @@ const chakram = require('chakram'),
 
 describe("Routes", () => {
   var user, payload;
-  
+
   const url = "http://localhost:3090";
 
   beforeEach(() => {
@@ -80,8 +80,14 @@ describe("Routes", () => {
       user.save();
     });
 
+    it("should return 200 when an unathorized user is accesses it", () => {
+      const response = chakram.post(`${url}/signin`, payload);
+
+      return expect(response).to.have.status(200);
+    });
+
     it("should require email", () => {
-      user.email = "";
+      payload.body.email = "";
 
       const response = chakram.post(`${url}/signin`, payload);
 
@@ -89,7 +95,7 @@ describe("Routes", () => {
     });
 
     it("should require password", () => {
-      user.password = "";
+      payload.body.password = "";
 
       const response = chakram.post(`${url}/signin`, payload);
 
@@ -97,7 +103,7 @@ describe("Routes", () => {
     });
 
     it("should deny a wrong email", () => {
-      user.password = "jameswest1@example.com";
+      payload.body.password = "jameswest1@example.com";
 
       const response = chakram.post(`${url}/signin`, payload);
 
@@ -105,7 +111,7 @@ describe("Routes", () => {
     });
 
     it("should deny a wrong password", () => {
-      user.password = "p@ssword";
+      payload.body.password = "p@ssword";
 
       const response = chakram.post("http://localhost:3090/signin", payload);
 
