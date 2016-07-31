@@ -1,10 +1,11 @@
+'use strict';
 const chakram = require('chakram'),
       expect = chakram.expect,
       User = require('../models/user'),
       tokenForUser = require('../helpers/token_for_user');
 
 describe("Routes", () => {
-  var user, payload;
+  let user, payload;
 
   const url = "http://localhost:3090";
 
@@ -14,11 +15,7 @@ describe("Routes", () => {
       password: "password"
     });
 
-    payload = {
-      body: {
-        email: user.email, password: user.password
-      }
-    };
+    payload = { body: user };
   });
 
   describe("/", () => {
