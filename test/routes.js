@@ -73,46 +73,53 @@ describe("Routes", () => {
 
   describe("/signin", () => {
 
-    beforeEach(() => {
-      user.save();
-    });
-
     it("should return 200 when an unathorized user is accesses it", () => {
-      const response = chakram.post(`${url}/signin`, payload);
+      user.save(() => {
+        const response = chakram.post(`${url}/signin`, payload);
 
-      return expect(response).to.have.status(200);
+        return expect(response).to.have.status(200);
+      });
     });
 
     it("should require email", () => {
-      payload.body.email = "";
 
-      const response = chakram.post(`${url}/signin`, payload);
+      user.save(() => {
+        payload.body.email = "";
 
-      return expect(response).to.have.status(400);
+        const response = chakram.post(`${url}/signin`, payload);
+
+        return expect(response).to.have.status(400);
+      });
     });
 
     it("should require password", () => {
-      payload.body.password = "";
+      user.save(() => {
+        payload.body.password = "";
 
-      const response = chakram.post(`${url}/signin`, payload);
+        const response = chakram.post(`${url}/signin`, payload);
 
-      return expect(response).to.have.status(400);
+        return expect(response).to.have.status(400);
+      });
     });
 
     it("should deny a wrong email", () => {
-      payload.body.password = "jameswest1@example.com";
+      user.save(() => {
+        payload.body.password = "jameswest1@example.com";
 
-      const response = chakram.post(`${url}/signin`, payload);
+        const response = chakram.post(`${url}/signin`, payload);
 
-      return expect(response).to.have.status(400);
+        return expect(response).to.have.status(400);
+      });
     });
 
     it("should deny a wrong password", () => {
-      payload.body.password = "p@ssword";
+      user.save(() => {
+        payload.body.password = "p@ssword";
 
-      const response = chakram.post("http://localhost:3090/signin", payload);
+        const response = chakram.post("http://localhost:3090/signin", payload);
 
-      return expect(response).to.have.status(400);
+        return expect(response).to.have.status(400);
+      });
     });
   });
 });
