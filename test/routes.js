@@ -45,7 +45,7 @@ describe("Routes", () => {
 
   describe("/signup", () => {
     it("should require email", () => {
-      user.email = "";
+      payload.body.email = "";
 
       const response = chakram.post(`${url}/signup`, payload);
 
@@ -53,7 +53,7 @@ describe("Routes", () => {
     });
 
     it("should require password", () => {
-      user.password = "";
+      payload.body.password = "";
 
       const response = chakram.post(`${url}/signup`, payload);
 
