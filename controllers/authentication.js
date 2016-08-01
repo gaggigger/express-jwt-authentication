@@ -1,11 +1,7 @@
 const jwt = require('jwt-simple');
 const User = require('../models/user');
 const config = require('../config');
-
-function tokenForUser(user) {
-  const timestamp = new Date().getTime();
-  return jwt.encode({ sub: user.id, iat: timestamp }, config.secret);
-}
+const tokenForUser = require('../helpers/token_for_user');
 
 exports.signin = function(req, res, next) {
   // User has already had their email and password auth'd
